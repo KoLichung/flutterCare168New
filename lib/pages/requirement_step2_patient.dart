@@ -207,9 +207,9 @@ class _RequirementStep2PatientState extends State<RequirementStep2Patient> {
                           requireModel.patientWeight = value;
 
                           // for(var item in requireModel.checkExtraServiceChoices){
-                          //   if(item.service!.name! == '體重超過 70 公斤' ){
+                          //   if(item.service!.name! == '體重超過 75 公斤' ){
                           //     if(requireModel.patientWeight != null && requireModel.patientWeight != ''){
-                          //       if (int.parse(requireModel.patientWeight!) >= 70 && int.parse(requireModel.patientWeight!) < 90){
+                          //       if (int.parse(requireModel.patientWeight!) >= 75 && int.parse(requireModel.patientWeight!) < 90){
                           //         item.isChecked = true;
                           //       } else {
                           //         item.isChecked = false;
@@ -526,7 +526,7 @@ class _RequirementStep2PatientState extends State<RequirementStep2Patient> {
               ],
             )
         );
-      } else if (extraServiceChoice.service!.name=='體重超過 70 公斤'){
+      } else if (extraServiceChoice.service!.name=='體重超過 75 公斤'){
         extraServiceList.add(
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -543,7 +543,7 @@ class _RequirementStep2PatientState extends State<RequirementStep2Patient> {
                         // value: extraServiceChoice.isChecked,
                         value: weightController.text ==''
                             ? extraServiceChoice.isChecked = false
-                            : ((weightController.text !='' && int.parse(weightController.text) >=70 && int.parse(weightController.text) < 90)
+                            : ((weightController.text !='' && int.parse(weightController.text) >=75 && int.parse(weightController.text) < 90)
                               ? extraServiceChoice.isChecked = true
                               : extraServiceChoice.isChecked = false) ,
                         onChanged: (bool? value) {

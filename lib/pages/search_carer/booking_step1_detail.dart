@@ -108,7 +108,7 @@ class _BookingStep1DetailState extends State<BookingStep1Detail> {
     var bookingModel = context.read<BookingModel>();
     var userModel = context.read<UserModel>();
 
-    print(bookingModel.carer);
+    print('here !!!');
 
     return Scaffold(
       appBar: AppBar(
@@ -599,7 +599,7 @@ class _BookingStep1DetailState extends State<BookingStep1Detail> {
                           // value: extraServiceChoice.isChecked,
                           value: weightController.text == ''
                               ? extraServiceChoice.isChecked = false
-                              :  (weightController.text != '' && int.parse(weightController.text) >= 70 && int.parse(weightController.text)<90)
+                              :  (weightController.text != '' && int.parse(weightController.text) >= 75 && int.parse(weightController.text)<90)
                               ? extraServiceChoice.isChecked = true
                               : extraServiceChoice.isChecked = false,
                           onChanged: (bool? value) {

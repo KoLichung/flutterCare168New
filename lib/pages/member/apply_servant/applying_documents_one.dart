@@ -43,7 +43,7 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
 
   TextEditingController emergencyRoom = TextEditingController();
   TextEditingController infectiousDisease = TextEditingController();
-  TextEditingController over70KG = TextEditingController();
+  TextEditingController over75KG = TextEditingController();
   TextEditingController over90KG = TextEditingController();
   TextEditingController aboutMeController = TextEditingController();
 
@@ -253,13 +253,13 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('體重超過70公斤：'),
+                    const Text('體重超過75公斤：'),
                     Container(
                       width: 60,
                       height: 40,
                       margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                       child: TextField(
-                        controller: over70KG,
+                        controller: over75KG,
                         keyboardType: TextInputType.number,
                         onChanged: (value){
                           setState(() {
@@ -341,7 +341,7 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
                 CustomButton(text: "下一頁", color: AppColor.purple, onPressed: (){
                   if(aboutMeController.text==''){
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("請填寫關於我！"),));
-                  }else if(emergencyRoom.text==''||infectiousDisease.text==''||over70KG.text==''||over90KG.text==''){
+                  }else if(emergencyRoom.text==''||infectiousDisease.text==''||over75KG.text==''||over90KG.text==''){
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("請填寫每一個加價項目！"),));
                   }else{
                     Navigator.push(
@@ -709,7 +709,7 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
                   height: 40,
                   margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                   child: TextField(
-                    controller: over70KG,
+                    controller: over75KG,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 0.0,horizontal: 10),
                       border: OutlineInputBorder(
@@ -799,7 +799,7 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
       } else if(serviceChoice == 2){
         // serviceModel.checkedUserServices.add(Service(service: serviceChoice,increasePercent: double.parse(infectiousDisease.text)));
       } else if(serviceChoice == 3){
-        // serviceModel.checkedUserServices.add(Service(service: serviceChoice,increasePercent: double.parse(over70KG.text)));
+        // serviceModel.checkedUserServices.add(Service(service: serviceChoice,increasePercent: double.parse(over75KG.text)));
       } else if(serviceChoice == 4){
         // serviceModel.checkedUserServices.add(Service(service: serviceChoice,increasePercent: double.parse(over90KG.text)));
       } else if (serviceChoice >=5 && serviceChoice <=18){
@@ -835,7 +835,7 @@ class _ApplyDocumentsOneState extends State<ApplyDocumentsOne> {
             infectiousDisease.text = service.increasePercent!.toInt().toString();
           }
           if(service.service==3){
-            over70KG.text = service.increasePercent!.toInt().toString();
+            over75KG.text = service.increasePercent!.toInt().toString();
           }
           if(service.service==4){
             over90KG.text = service.increasePercent!.toInt().toString();

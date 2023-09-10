@@ -76,7 +76,7 @@ class _SearchCaseDetailPageState extends State<SearchCaseDetailPage> {
                               child: searchCase.isTaken == false ? CustomTag.caseOpen : CustomTag.caseClosed ,
                             )
                         ],),
-                        Text( _getMrOrMSString(searchUser.name!, searchUser.gender!),style: const TextStyle(fontSize: 20),),
+                        Text( (searchCase.neederName!=null)?_getMrOrMSString(searchCase.neederName!, searchUser.gender!):_getMrOrMSString(searchUser.name!, searchUser.gender!),style: const TextStyle(fontSize: 20),),
                         Wrap(
                           children: [
                             ReviewStars.getReviewStars(searchCase.avgOffenderRating!),

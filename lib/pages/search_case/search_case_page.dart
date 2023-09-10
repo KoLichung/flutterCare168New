@@ -92,11 +92,13 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          elevation: 2,
+          shadowColor: Colors.black26,
           title: const Text('找案件'),
           bottom: PreferredSize(
-            preferredSize: chosenConditionsStrings.isEmpty? const Size.fromHeight(58) : const Size.fromHeight(118) ,
+            preferredSize: chosenConditionsStrings.isEmpty? const Size.fromHeight(105) : const Size.fromHeight(118) ,
             child: Container(
-              color: const Color(0xffF2F2F2),
+              color: Colors.white,
               child: Column(
                 children: [
                   Container(
@@ -263,6 +265,24 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
                           }),
                     ),
                   ),
+                  const Divider(height: 2,),
+                  TextButton(
+                    child: const Text('馬上填寫需求單',style: TextStyle(decoration: TextDecoration.underline, color: AppColor.purple, fontSize: 15),),
+                    onPressed: (){
+                      var userModel = context.read<UserModel>();
+                      if(userModel.isLogin()){
+                        Navigator.pushNamed(context, '/requirementStep1Basic');
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginRegister(),
+                            ));
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 0),
+                  const Divider(height: 0,),
                 ],
               ),
             ),
@@ -312,7 +332,12 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
       const Center(child: CircularProgressIndicator())
           :
       (newCaseList.isNotEmpty)?
-      ListView.builder(
+      Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(height: 0),
+          Expanded(
+            child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: newCaseList.length,
@@ -351,9 +376,9 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
                       children: [
                         Center(
                           child: Container(
-                            width: 320,
-                            // color: Colors.lightBlue,
-                            child: Padding(
+                              width: 320,
+                              // color: Colors.lightBlue,
+                              child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -403,8 +428,8 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
                                   ],
                                 ),
                               )
-                            ),
                           ),
+                        ),
                         const Divider(
                           color: Color(0xffC0C0C0),
                         ),
@@ -417,7 +442,10 @@ class _SearchCaseStatePage extends State<SearchCasePage> {
                     },
                   );
                 }
-            )
+            ),
+          ),
+        ],
+      )
           :
       const Center(
         child: Text('此搜索條件無案件資料！'),

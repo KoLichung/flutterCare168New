@@ -39,6 +39,8 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
   // List<int> extraServicePriceInts = []; //使用者所選的所有加價項目
   // int? extraServiceTotalPriceInt; //使用者所選加價項目的總價
 
+  bool isCreating = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -221,7 +223,7 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
               ElevatedButton(
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30,vertical: 8),
-                  child: Text('確認發出預定單',style: TextStyle(fontSize: 18),),
+                  child: Text('向服務者發出訂單',style: TextStyle(fontSize: 18),),
               ),
                 style: ElevatedButton.styleFrom(primary: AppColor.green, elevation: 0),
                 onPressed: (){
@@ -229,7 +231,12 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
                   if(bookingModel.baseMoney == null || bookingModel.baseMoney! <= 0 || bookingModel.workHours! <= 0){
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("金額或時間計算錯誤！無法發出訂單～如有疑問請聯繫平台客服。"),));
                   }else{
-                    _postCreateOrEditCase();
+                    if(!isCreating) {
+                      _postCreateOrEditCase();
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("訂單處理中，請稍候！"),));
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("訂單處理中，請稍候！"),));
+                    }
                   }
                 },
               ),
@@ -586,6 +593,8 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
   }
 
   Future _postCreateOrEditCase() async {
+    isCreating = true;
+
     var bookingModel = context.read<BookingModel>();
     var userModel = context.read<UserModel>();
 
@@ -628,6 +637,7 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
         'care_type': (bookingModel.careType==CareType.homeCare)?'home':'hospital',
         'is_continuous_time': bookingModel.timeType==TimeType.continuous?'True':'False',
         'name': bookingModel.patientName,
+        'needer_name': bookingModel.neederName,
         'gender': bookingModel.patientGender==Gender.male?'M':'F',
         'age': bookingModel.patientAge!,
         'weight': bookingModel.patientWeight!,
@@ -656,11 +666,12 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
         body: jsonEncode(bodyParameters),
       );
 
-      print(response.statusCode);
-      _printLongString(response.body);
+      // print(response.statusCode);
+      // _printLongString(response.body);
+      isCreating = false;
 
       if(response.statusCode == 200){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("成功發出預定單！請至聊聊訊息查看～"),));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("成功發出訂單！請至聊聊訊息查看～"),));
         // userModel.setUserUnReadNum(userModel.user!.totalUnReadNum!+1);
         // Navigator.popUntil(context, (route) => route.isFirst);
         bookingModel.clearBookingModelData();
@@ -670,11 +681,12 @@ class _BookingStep4ConfirmState extends State<BookingStep4Confirm> {
             )
             , (route) => route.isFirst);
       }else{
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("無法產生預定單，請稍後再試！"),));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("無法產生訂單，請稍後再試！"),));
       }
 
     } catch (e) {
       print(e);
+      isCreating = false;
       return "error";
     }
   }

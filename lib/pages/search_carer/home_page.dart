@@ -842,7 +842,7 @@ class _HomePageState extends State<HomePage> {
                   TextButton(
                     child: const Text('前往更新'),
                     onPressed: ()async{
-                      String app= 'https://play.google.com/store/apps/details?id=com.chijia.fluttercare168';
+                      String app= 'market://details?id=com.chijia.fluttercare168';
                       Uri url = Uri.parse(app);
                       if (!await launchUrl(url)) {
                         throw 'Could not launch $url';

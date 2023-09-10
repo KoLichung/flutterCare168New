@@ -39,6 +39,8 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
   int? startTime;
   int? endTime;
 
+  bool isCreating = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -63,7 +65,11 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
               })
         ],
       ),
-      body: Padding(
+      body:
+      (isCreating)?
+      const Center(child: CircularProgressIndicator())
+          :
+      Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
@@ -122,7 +128,12 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
                 ),
                 style: ElevatedButton.styleFrom(primary: AppColor.green, elevation: 0),
                 onPressed: (){
-                  _postCreateCase();
+                  if(!isCreating) {
+                    _postCreateCase();
+                    setState(() {});
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("處理中，請稍候！"),));
+                  }
                 },
               ),
               const SizedBox(height: 40,),
@@ -533,6 +544,8 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
   }
 
   Future _postCreateCase() async {
+    isCreating = true;
+
     String path = ServerApi.PATH_CREATE_CASE;
 
     var userModel = context.read<UserModel>();
@@ -566,6 +579,7 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
         'is_continuous_time': requireModel.timeType==TimeType.continuous?'true':'false',
         'weekday':getWeekDayIntStrings(),
         'name': requireModel.patientName,
+        'needer_name': requireModel.neederName,
         'gender': requireModel.patientGender==Gender.male?'M':'F',
         'age': requireModel.patientAge!,
         'weight': requireModel.patientWeight!,
@@ -590,9 +604,10 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
           body: jsonEncode(bodyParameters),
       );
 
-      print(bodyParameters);
-      print(response.statusCode);
-      _printLongString(response.body);
+      isCreating = false;
+      // print(bodyParameters);
+      // print(response.statusCode);
+      // _printLongString(response.body);
 
       if(response.statusCode == 200){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("成功發出需求單！"),));
@@ -600,10 +615,13 @@ class _RequirementStep4ConfirmState extends State<RequirementStep4Confirm> {
         Navigator.popUntil(context, (route) => route.isFirst);
       }else{
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("無法產生需求單，請稍後再試！"),));
+        setState(() {});
       }
 
     } catch (e) {
       print(e);
+      isCreating = false;
+      setState(() {});
       return "error";
     }
   }

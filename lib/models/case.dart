@@ -175,7 +175,7 @@ class Case {
       county :  json['county'],
       languages:languages,
       userDetail: (json['user_detail']!=null)?UserDetail.fromJson(json['user_detail']):null,
-      neederName: json['needer_name'],
+      neederName: json['neederName'],
       neederPhone: json['needer_phone'],
     );
 

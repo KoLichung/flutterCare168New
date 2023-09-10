@@ -20,6 +20,8 @@ class BookingStep3Contact extends StatefulWidget {
 
 class _BookingStep3ContactState extends State<BookingStep3Contact> {
 
+  TextEditingController neederNameController = TextEditingController();
+
   TextEditingController contactNameController = TextEditingController();
   TextEditingController relationController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -29,6 +31,14 @@ class _BookingStep3ContactState extends State<BookingStep3Contact> {
     // TODO: implement initState
     super.initState();
     var bookingModel = context.read<BookingModel>();
+    var userModel = context.read<UserModel>();
+
+    bookingModel.neederName == null?
+    userModel.user == null? neederNameController.text='' : neederNameController.text = userModel.user!.name!
+        : neederNameController.text = bookingModel.neederName!;
+
+    bookingModel.neederName ??= userModel.user!.name!;
+
     bookingModel.emergencyContactName == null ? contactNameController.text ='' : contactNameController.text = bookingModel.emergencyContactName! ;
     bookingModel.emergencyContactRelation == null ? relationController.text ='' : relationController.text = bookingModel.emergencyContactRelation! ;
     bookingModel.emergencyContactPhone == null ? phoneController.text ='' : phoneController.text = bookingModel.emergencyContactPhone! ;
@@ -64,7 +74,33 @@ class _BookingStep3ContactState extends State<BookingStep3Contact> {
                     child: Text('【 步驟 3 填寫聯絡人資訊】', style: TextStyle(color: AppColor.purple, fontWeight: FontWeight.bold),),
                   )),
                   kSectionTitle('預定者：'),
-                  Text('姓名：${userModel.user!.name!}'),
+                  Row(
+                    children: [
+                      const Text('姓名：'),
+                      Container(
+                        width: 120,
+                        height: 40,
+                        margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                        child: TextField(
+                          controller: neederNameController,
+                          onChanged: (value){
+                            setState(() {
+                              bookingModel.neederName = value;
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 0.0,horizontal: 10),
+                            border: OutlineInputBorder(
+                                borderRadius:BorderRadius.all(Radius.circular(3),),
+                                borderSide: BorderSide.none
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffE5E5E5),
+                          ),
+                        ),
+                      ),
+                    ],),
+                  const Text('(為保障您的權益，請確認預定者的姓名是否正確！)'),
                   const SizedBox(height: 10,),
                   Text('聯絡電話：${userModel.user!.phone}'),
                   const SizedBox(height: 20,),

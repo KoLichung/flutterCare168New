@@ -64,6 +64,8 @@ class BookingModel extends ChangeNotifier {
 
   int caseId = 0; // if caseId != 0, 是 edit_order
 
+  String? neederName;
+
   void clearBookingModelData(){
     carer = null;
     careType = CareType.homeCare;

@@ -43,6 +43,8 @@ class RequireModel extends ChangeNotifier {
   String? emergencyContactRelation;
   String? emergencyContactPhone;
 
+  String? neederName;
+
   //確認送出
 
 

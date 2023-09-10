@@ -22,6 +22,8 @@ class RequirementStep3Contact extends StatefulWidget {
 
 class _RequirementStep3ContactState extends State<RequirementStep3Contact> {
 
+  TextEditingController neederNameController = TextEditingController();
+
   TextEditingController contactNameController = TextEditingController();
   TextEditingController relationController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -31,6 +33,14 @@ class _RequirementStep3ContactState extends State<RequirementStep3Contact> {
     // TODO: implement initState
     super.initState();
     var requireModel = context.read<RequireModel>();
+    var userModel = context.read<UserModel>();
+
+    requireModel.neederName == null?
+        userModel.user == null? neederNameController.text='' : neederNameController.text = userModel.user!.name!
+        : neederNameController.text = requireModel.neederName!;
+
+    requireModel.neederName ??= userModel.user!.name!;
+
     requireModel.emergencyContactName == null ? contactNameController.text ='' : contactNameController.text = requireModel.emergencyContactName! ;
     requireModel.emergencyContactRelation == null ? relationController.text ='' : relationController.text = requireModel.emergencyContactRelation! ;
     requireModel.emergencyContactPhone == null ? phoneController.text ='' : phoneController.text = requireModel.emergencyContactPhone! ;
@@ -63,7 +73,33 @@ class _RequirementStep3ContactState extends State<RequirementStep3Contact> {
                   CustomTag.requirementStep3,
                   const SizedBox(height: 20,),
                   kSectionTitle('預定者：'),
-                  Text('姓名：${userModel.user!.name!}'),
+                  Row(
+                    children: [
+                      const Text('姓名：'),
+                      Container(
+                        width: 120,
+                        height: 40,
+                        margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                        child: TextField(
+                          controller: neederNameController,
+                          onChanged: (value){
+                            setState(() {
+                              requireModel.neederName = value;
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 0.0,horizontal: 10),
+                            border: OutlineInputBorder(
+                                borderRadius:BorderRadius.all(Radius.circular(3),),
+                                borderSide: BorderSide.none
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffE5E5E5),
+                          ),
+                        ),
+                      ),
+                    ],),
+                  const Text('(為保障您的權益，請確認預定者的姓名是否正確！)'),
                   const SizedBox(height: 10,),
                   Text('聯絡電話：${userModel.user!.phone!}'),
                   const SizedBox(height: 20,),
